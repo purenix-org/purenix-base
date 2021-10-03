@@ -16,7 +16,7 @@ to generate this file without the comments in this block.
 
 , backend = "purenix"
 
-, packages = ../packages.dhall
+, packages = {=}
 
 , sources =
     [ "src/**/*.purs"

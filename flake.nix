@@ -9,13 +9,6 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         overlay = self: _: {
-          purenixShell = self.mkShell {
-            packages = [
-              self.purescript
-              purenix.defaultPackage.${system}
-              self.spago
-            ];
-          };
         };
         pkgs = import nixpkgs {
           inherit system;
@@ -25,7 +18,7 @@
         };
       in
       {
-        devShell = pkgs.purenixShell;
+        devShell = purenix.devShells.${system}.use-purenix;
       }
     );
 }

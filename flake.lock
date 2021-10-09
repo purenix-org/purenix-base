@@ -317,11 +317,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1633233342,
-        "narHash": "sha256-gc5Vs7X0Ykalwt/qhldbLYSlEGjOCcmib4bxMPP8GIs=",
+        "lastModified": 1633768245,
+        "narHash": "sha256-j2JX/hzQOPT1w49pFLgAv8yCiga8LIcpYqTQZKodr5M=",
         "owner": "purenix-org",
         "repo": "purenix",
-        "rev": "a07626e13bbf86920222e2b8b17e94771aa083c5",
+        "rev": "c3a5fd408b39abf704086dc54625b8eacf4fce04",
         "type": "github"
       },
       "original": {

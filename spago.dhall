@@ -4,7 +4,6 @@
     [ "control"
     , "invariant"
     , "maybe"
-    , "newtype"
     , "prelude"
     ]
 

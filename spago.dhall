@@ -3,7 +3,8 @@
 , dependencies =
     [ "control"
     , "invariant"
-	, "newtype"
+    , "maybe"
+    , "newtype"
     , "prelude"
     ]
 

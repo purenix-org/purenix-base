@@ -1,7 +1,6 @@
 { name = "purescript-profunctor"
 , dependencies =
-    [ "unsafe-coerce"
-    , "control"
+    [ "control"
     , "distributive"
     , "either"
     , "exists"

@@ -80,16 +80,32 @@
 # };
 
   # foreign import foreach :: forall r a. Array a -> (a -> ST r Unit) -> ST r Unit
+  foreach = arr: f: state:
+    let
+      # :: Int
+      arrLen = builtins.length arr;
 
-# exports.foreach = function (as) {
-#   return function (f) {
-#     return function () {
-#       for (var i = 0, l = as.length; i < l; i++) {
-#         f(as[i])();
-#       }
-#     };
-#   };
-# };
+      # :: Int -> STState -> STReturn Unit
+      go = i: state':
+        if i >= arrLen then
+          # PureScript unit is represented by null in the Nix output by
+          # PureNix.
+          { res = null; state = state'; }
+        else
+          let
+            # :: a
+            a = builtins.elemAt arr i;
+            # :: ST r Unit
+            nextST = f a;
+            # STReturn Unit
+            stReturn = nextST state';
+            # STState
+            newState = stReturn.state;
+          in
+          go (i + 1) newState;
+    in
+    go 0 state;
+
 
   # new :: forall a r. a -> ST r (STRef r a)
   new = a: state:

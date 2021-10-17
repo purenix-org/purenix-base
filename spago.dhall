@@ -2,7 +2,7 @@
 , dependencies =
     [ "partial"
     , "prelude"
-    , "unsafe-coerce"
+    -- , "unsafe-coerce"
     ]
 , backend = "purenix"
 , packages = ./packages.dhall

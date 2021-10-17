@@ -1,7 +1,8 @@
 { name = "purescript-st"
 , dependencies =
-    [ "partial"
-    , "prelude"
+    [
+    -- "partial"
+      "prelude"
     -- , "unsafe-coerce"
     ]
 , backend = "purenix"

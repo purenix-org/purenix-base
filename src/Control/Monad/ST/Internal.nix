@@ -23,13 +23,13 @@
       # :: STReturn a
       stAReturn = stA state;
     in
-    return // { res = a2b return.res; };
+    stAReturn // { res = a2b stAReturn.res; };
 
   # :: forall r a. a -> ST r a
-  pure = a: state: { res = a; inherit state; };
+  pure_ = a: state: { res = a; inherit state; };
 
   # :: forall r a b. ST r a -> (a -> ST r b) -> ST r b
-  bind = m: k: state:
+  bind_ = m: k: state:
     let
       # :: STReturn a
       mReturn = m state;
@@ -48,7 +48,7 @@
   run = stA:
     let
       # :: STReturn a
-      stAReturn = st { nextId = 0; refs = {}; };
+      stAReturn = stA { nextId = 0; refs = {}; };
     in
     stAReturn.res;
 
@@ -107,7 +107,7 @@
       # :: STState
       newState = { nextId = newNextId; refs = newRefs; };
     in
-    { res = newNextId; state = newState; };
+    { res = nextId; state = newState; };
 
   # read :: forall a r. STRef r a -> ST r a
   read = id: state: { res = state.refs.${toString id}; inherit state; };

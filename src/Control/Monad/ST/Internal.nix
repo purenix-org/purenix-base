@@ -139,7 +139,6 @@
     in
     go 0 state;
 
-
   # new :: forall a r. a -> ST r (STRef r a)
   new = a: state:
     let

@@ -52,7 +52,32 @@
     in
     stAReturn.res;
 
-  # foreign import while :: forall r a. ST r Boolean -> ST r a -> ST r Unit
+  # :: forall r a. ST r Boolean -> ST r a -> ST r Unit
+  while = stBool: stA: state:
+    let
+      # :: ST r Unit
+      go = state':
+        let
+          # :: STReturn Boolean
+          stReturnBool = stBool state';
+          # :: Boolean
+          bool = stReturnBool.res;
+          # :: STState
+          stateAfterEvalBool = stReturnBool.state;
+        in
+        if bool then
+          let
+            # :: STReturn a
+            stReturnA = stA stateAfterEvalBool;
+            # :: STState
+            stateAfterEvalA = stReturnA.state;
+          in
+          go stateAfterEvalA
+        else
+          # PureScript unit is represented by null in the Nix output by
+          # PureNix.
+          { res = null; state = stateAfterEvalBool; };
+    in go state;
 
 
 # exports["while"] = function (f) {
@@ -71,6 +96,8 @@
       # :: Int -> STState -> STReturn a
       go = i: state':
         if i >= hi then
+          # PureScript unit is represented by null in the Nix output by
+          # PureNix.
           { res = null; state = state'; }
         else
           let

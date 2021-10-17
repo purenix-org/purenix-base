@@ -16,7 +16,7 @@ module Control.Monad.ST.Internal
 import Prelude
 
 -- import Control.Monad.Rec.Class (class MonadRec, Step(..))
-import Partial.Unsafe (unsafePartial)
+-- import Partial.Unsafe (unsafePartial)
 
 -- | `ST` is concerned with _restricted_ mutation. Mutation is restricted to a
 -- | _region_ of mutable references. This kind is inhabited by phantom types

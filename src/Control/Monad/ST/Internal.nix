@@ -65,21 +65,27 @@
 #   };
 # };
 
-  # foreign import for :: forall r a. Int -> Int -> (Int -> ST r a) -> ST r Unit
+  # :: forall r a. Int -> Int -> (Int -> ST r a) -> ST r Unit
+  for = lo: hi: f: state:
+    let
+      # :: Int -> STState -> STReturn a
+      go = i: state':
+        if i >= hi then
+          { res = null; state = state'; }
+        else
+          let
+            # :: ST r a
+            nextST = f i;
+            # :: STReturn a
+            stReturn = nextST state';
+            # :: STState
+            newState  = stReturn.state;
+          in
+          go (i + 1) newState;
+    in
+    go lo state;
 
-# exports["for"] = function (lo) {
-#   return function (hi) {
-#     return function (f) {
-#       return function () {
-#         for (var i = lo; i < hi; i++) {
-#           f(i)();
-#         }
-#       };
-#     };
-#   };
-# };
-
-  # foreign import foreach :: forall r a. Array a -> (a -> ST r Unit) -> ST r Unit
+  # :: forall r a. Array a -> (a -> ST r Unit) -> ST r Unit
   foreach = arr: f: state:
     let
       # :: Int
@@ -97,9 +103,9 @@
             a = builtins.elemAt arr i;
             # :: ST r Unit
             nextST = f a;
-            # STReturn Unit
+            # :: STReturn Unit
             stReturn = nextST state';
-            # STState
+            # :: STState
             newState = stReturn.state;
           in
           go (i + 1) newState;

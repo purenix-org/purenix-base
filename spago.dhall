@@ -2,7 +2,6 @@
 , dependencies =
     [ "partial"
     , "prelude"
-    , "tailrec"
     , "unsafe-coerce"
     ]
 , backend = "purenix"

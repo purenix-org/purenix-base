@@ -1,5 +1,5 @@
 
-# type STState = { nextIdx :: Int, refs :: RefMap }
+# type STState = { nextId :: Int, refs :: RefMap }
 # type STReturn a = { res :: a, state :: STState }
 # type ST s a = STState -> STReturn a
 # type STRef = Int
@@ -23,7 +23,7 @@
       # :: STReturn a
       stAReturn = stA state;
     in
-      return // { res = a2b return.res; };
+    return // { res = a2b return.res; };
 
   # :: forall r a. a -> ST r a
   pure = a: state: { res = a; inherit state; };
@@ -48,9 +48,9 @@
   run = stA:
     let
       # :: STReturn a
-      stAReturn = st { nextIdx = 0; refs = {}; };
+      stAReturn = st { nextId = 0; refs = {}; };
     in
-      stAReturn.res;
+    stAReturn.res;
 
   # foreign import while :: forall r a. ST r Boolean -> ST r a -> ST r Unit
 
@@ -91,33 +91,50 @@
 #   };
 # };
 
-# exports.new = function (val) {
-#   return function () {
-#     return { value: val };
-#   };
-# };
+  # new :: forall a r. a -> ST r (STRef r a)
+  new = a: state:
+    let
+      # :: Int
+      nextId = state.nextId;
+      # :: RefMap
+      refs = state.refs;
+      # :: String
+      newKey = toString nextId;
+      # :: Int
+      newNextId = nextId + 1;
+      # :: RefMap
+      newRefs = refs // { "${toString nextId}" = a; };
+      # :: STState
+      newState = { nextId = newNextId; refs = newRefs; };
+    in
+    { res = newNextId; state = newState; };
 
-# exports.read = function (ref) {
-#   return function () {
-#     return ref.value;
-#   };
-# };
+  # read :: forall a r. STRef r a -> ST r a
+  read = id: state: { res = state.refs.${toString id}; inherit state; };
 
-# exports.modifyImpl = function (f) {
-#   return function (ref) {
-#     return function () {
-#       var t = f(ref.value);
-#       ref.value = t.state;
-#       return t.value;
-#     };
-#   };
-# };
+  # :: forall r a b. (a -> { state :: a, value :: b }) -> STRef r a -> ST r b
+  modifyImpl = f: id: state:
+    let
+      # :: { state :: a, value :: b }
+      newSAndV = f state.refs.${toString id};
+      # :: a
+      newS = newSAndV.state;
+      # :: b
+      newV = newSAndV.value;
+      # :: RefMap
+      newRefs = state.refs // { "${toString id}" = newS; };
+      # :: STState
+      newState = { nextId  = state.nextId; refs = newRefs; };
+    in
+    { res = newV; state = newState; };
 
-# exports.write = function (a) {
-#   return function (ref) {
-#     return function () {
-#       return ref.value = a; // eslint-disable-line no-return-assign
-#     };
-#   };
-# };
-
+  # :: forall a r. a -> STRef r a -> ST r a
+  write = a: id: state:
+    let
+      # :: RefMap
+      newRefs = state.refs // { "${toString id}" = a; };
+      # :: STState
+      newState = { nextId = state.nextId; refs = newRefs; };
+    in
+    { res = a; state = newState; };
+}

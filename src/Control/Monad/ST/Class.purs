@@ -3,8 +3,8 @@ module Control.Monad.ST.Class where
 import Prelude
 
 import Control.Monad.ST (ST)
-import Control.Monad.ST.Global (Global)
-import Control.Monad.ST.Global as Global
+-- import Control.Monad.ST.Global (Global)
+-- import Control.Monad.ST.Global as Global
 -- import Effect (Effect)
 
 class MonadST s m | m -> s where

@@ -8,7 +8,6 @@
     , "partial"
     , "prelude"
     , "st"
-    , "tailrec"
     , "tuples"
     , "unfoldable"
     , "unsafe-coerce"

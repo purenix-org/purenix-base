@@ -126,7 +126,7 @@ module Data.Array
   , all
 
   , foldM
-  , foldRecM
+  -- , foldRecM
 
   , unsafeIndex
   ) where
@@ -136,7 +136,7 @@ import Prelude
 import Control.Alt ((<|>))
 import Control.Alternative (class Alternative)
 import Control.Lazy (class Lazy, defer)
-import Control.Monad.Rec.Class (class MonadRec, Step(..), tailRecM2)
+-- import Control.Monad.Rec.Class (class MonadRec, Step(..), tailRecM2)
 import Control.Monad.ST as ST
 import Data.Array.NonEmpty.Internal (NonEmptyArray(..))
 import Data.Array.ST as STA
@@ -1263,14 +1263,14 @@ foreign import all :: forall a. (a -> Boolean) -> Array a -> Boolean
 foldM :: forall m a b. Monad m => (b -> a -> m b) -> b -> Array a -> m b
 foldM f b = unconsImpl (\_ -> pure b) (\a as -> f b a >>= \b' -> foldM f b' as)
 
-foldRecM :: forall m a b. MonadRec m => (b -> a -> m b) -> b -> Array a -> m b
-foldRecM f b array = tailRecM2 go b 0
-  where
-  go res i
-    | i >= length array = pure (Done res)
-    | otherwise = do
-        res' <- f res (unsafePartial (unsafeIndex array i))
-        pure (Loop { a: res', b: i + 1 })
+-- foldRecM :: forall m a b. MonadRec m => (b -> a -> m b) -> b -> Array a -> m b
+-- foldRecM f b array = tailRecM2 go b 0
+--   where
+--   go res i
+--     | i >= length array = pure (Done res)
+--     | otherwise = do
+--         res' <- f res (unsafePartial (unsafeIndex array i))
+--         pure (Loop { a: res', b: i + 1 })
 
 -- | Find the element of an array at the specified index.
 -- |

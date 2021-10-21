@@ -111,7 +111,7 @@ module Data.Array.NonEmpty
   , all
 
   , foldM
-  , foldRecM
+  -- , foldRecM
 
   , unsafeIndex
   ) where
@@ -120,7 +120,7 @@ import Prelude
 
 import Control.Alternative (class Alternative)
 import Control.Lazy (class Lazy)
-import Control.Monad.Rec.Class (class MonadRec)
+-- import Control.Monad.Rec.Class (class MonadRec)
 import Data.Array as A
 import Data.Array.NonEmpty.Internal (NonEmptyArray(..))
 import Data.Array.NonEmpty.Internal (NonEmptyArray) as Internal
@@ -552,8 +552,8 @@ all p = adaptAny $ A.all p
 foldM :: forall m a b. Monad m => (b -> a -> m b) -> b -> NonEmptyArray a -> m b
 foldM f acc = adaptAny $ A.foldM f acc
 
-foldRecM :: forall m a b. MonadRec m => (b -> a -> m b) -> b -> NonEmptyArray a -> m b
-foldRecM f acc = adaptAny $ A.foldRecM f acc
+-- foldRecM :: forall m a b. MonadRec m => (b -> a -> m b) -> b -> NonEmptyArray a -> m b
+-- foldRecM f acc = adaptAny $ A.foldRecM f acc
 
 unsafeIndex :: forall a. Partial => NonEmptyArray a -> Int -> a
 unsafeIndex = adaptAny A.unsafeIndex

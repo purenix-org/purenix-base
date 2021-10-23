@@ -59,8 +59,8 @@ in
   thaw = arr: state: stNew arr state;
 
   # :: forall h a
-  #  . (forall b. b -> Maybe b)
-  # -> (forall b. Maybe b)
+  #  . (forall b. b -> Maybe b)  # Just
+  # -> (forall b. Maybe b)       # Nothing
   # -> STArray h a
   # -> ST h (Maybe a)
   shiftImpl = Just: Nothing: id: state:
@@ -91,4 +91,31 @@ in
         newState' = ret'.state;
       in
       { res = Just firstElem; state = newState'; };
+
+  # :: forall a h
+  #  . (a -> a -> Ordering)
+  # -> (Ordering -> Int)
+  # -> STArray h a
+  # -> ST h (STArray h a)
+  sortByImpl = comp: ord2Int: id: state:
+    let
+      # :: STReturn (Array a)
+      ret = stRead id state;
+
+      # :: STState
+      newState = ret.state;
+
+      # :: Array a
+      arr = ret.res;
+
+      # :: a -> a -> Boolean
+      sortF = a: b: if ord2Int (comp a b) == -1 then true else false;
+
+      # :: Array a
+      sortedArray = builtins.sort sortF arr;
+
+      # :: STReturn (Array a)
+      ret' = stWrite sortedArray id newState;
+    in
+    { res = id; state = ret'.state; };
 }

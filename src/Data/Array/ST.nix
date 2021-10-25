@@ -144,7 +144,6 @@ in
     else
       { res = Nothing; state = newState; };
 
-
   # :: forall h a. Int -> a -> STArray h a -> ST h Boolean
   poke = index: a: id: state:
     let
@@ -176,4 +175,37 @@ in
     else
       { res = false; state = newState; };
 
+  # :: forall h a
+  #  . (forall b. b -> Maybe b)
+  # -> (forall b. Maybe b)
+  # -> STArray h a
+  # -> ST h (Maybe a)
+  popImpl = Just: Nothing: id: state:
+    let
+      # :: STReturn (Array a)
+      ret = stRead id state;
+
+      # :: STState
+      newState = ret.state;
+
+      # :: Array a
+      arr = ret.res;
+
+      # :: Int
+      len = builtins.length arr;
+    in
+    if len > 0 then
+      let
+        # :: Array a
+        newArr = builtins.genList (i: builtins.elemAt arr i) (len - 1);
+
+        # :: STReturn (Array a)
+        ret' = stWrite newArr id newState;
+
+        # :: STState
+        newState' = ret'.state;
+      in
+      { res = Just (builtins.elemAt arr (len - 1)); state = newState'; }
+    else
+      { res = Nothing; state = newState; };
 }

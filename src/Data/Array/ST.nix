@@ -123,8 +123,8 @@ in
   freeze = id: state: stRead id state;
 
   # :: forall h a r
-  #  . (a -> r)      # function to apply if index is in Array
-  # -> r             # value to return if index is not in Array
+  #  . (a -> r)      # function to apply if index is in Array (Just)
+  # -> r             # value to return if index is not in Array (Nothing)
   # -> Int           # index
   # -> STArray h a
   # -> ST h r
@@ -143,5 +143,37 @@ in
       { res = Just (builtins.elemAt arr index); state = newState; }
     else
       { res = Nothing; state = newState; };
+
+
+  # :: forall h a. Int -> a -> STArray h a -> ST h Boolean
+  poke = index: a: id: state:
+    let
+      # :: STReturn (Array a)
+      ret = stRead id state;
+
+      # :: STState
+      newState = ret.state;
+
+      # :: Array a
+      arr = ret.res;
+
+      # :: Int
+      len = builtins.length arr;
+    in
+    if index < len && index >= 0 then
+      let
+        # :: Array a
+        newArr =
+          builtins.genList (i: if i == index then a else builtins.elemAt arr i) len;
+
+        # :: STReturn (Array a)
+        ret' = stWrite newArr id newState;
+
+        # :: STState
+        newState' = ret'.state;
+      in
+      { res = true; state = newState'; }
+    else
+      { res = false; state = newState; };
 
 }

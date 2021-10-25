@@ -118,4 +118,30 @@ in
       ret' = stWrite sortedArray id newState;
     in
     { res = id; state = ret'.state; };
+
+  # :: forall h a. STArray h a -> ST h (Array a)
+  freeze = id: state: stRead id state;
+
+  # :: forall h a r
+  #  . (a -> r)      # function to apply if index is in Array
+  # -> r             # value to return if index is not in Array
+  # -> Int           # index
+  # -> STArray h a
+  # -> ST h r
+  peekImpl = Just: Nothing: index: id: state:
+    let
+      # :: STReturn (Array a)
+      ret = stRead id state;
+
+      # :: STState
+      newState = ret.state;
+
+      # :: Array a
+      arr = ret.res;
+    in
+    if index < builtins.length arr && index >= 0 then
+      { res = Just (builtins.elemAt arr index); state = newState; }
+    else
+      { res = Nothing; state = newState; };
+
 }

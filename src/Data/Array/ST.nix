@@ -266,4 +266,24 @@ in
       newState' = ret'.state;
     in
     { res = newLen; state = newState'; };
+
+  # :: forall h a. STArray h a -> ST h (Array (Assoc a))
+  toAssocArray = id: state:
+    let
+      # :: STReturn (Array a)
+      ret = stRead id state;
+
+      # :: STState
+      newState = ret.state;
+
+      # :: Array a
+      arr = ret.res;
+
+      # :: Array a
+      resArray =
+        builtins.genList
+          (index: { value = builtins.elemAt arr index; inherit index; } )
+          (builtins.length arr);
+    in
+    { res = resArray; state = newState; };
 }

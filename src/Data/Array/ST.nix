@@ -208,4 +208,33 @@ in
       { res = Just (builtins.elemAt arr (len - 1)); state = newState'; }
     else
       { res = Nothing; state = newState; };
+
+  # :: forall h a
+  #  . Array a
+  # -> STArray h a
+  # -> ST h Int
+  pushAll = as: id: state:
+    let
+      # :: STReturn (Array a)
+      ret = stRead id state;
+
+      # :: STState
+      newState = ret.state;
+
+      # :: Array a
+      arr = ret.res;
+
+      # :: Array a
+      newArr = arr ++ as;
+
+      # :: Int
+      newLen = builtins.length newArr;
+
+      # :: STReturn (Array a)
+      ret' = stWrite newArr id newState;
+
+      # :: STState
+      newState' = ret'.state;
+    in
+    { res = newLen; state = newState'; };
 }

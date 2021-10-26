@@ -237,4 +237,33 @@ in
       newState' = ret'.state;
     in
     { res = newLen; state = newState'; };
+
+  # :: forall h a
+  #  . Array a
+  # -> STArray h a
+  # -> ST h Int
+  unshiftAll = as: id: state:
+    let
+      # :: STReturn (Array a)
+      ret = stRead id state;
+
+      # :: STState
+      newState = ret.state;
+
+      # :: Array a
+      arr = ret.res;
+
+      # :: Array a
+      newArr = as ++ arr;
+
+      # :: Int
+      newLen = builtins.length newArr;
+
+      # :: STReturn (Array a)
+      ret' = stWrite newArr id newState;
+
+      # :: STState
+      newState' = ret'.state;
+    in
+    { res = newLen; state = newState'; };
 }

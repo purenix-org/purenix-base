@@ -18,7 +18,7 @@ module Data.Array.ST
   , shift
   , unshift
   , unshiftAll
-  , splice
+  -- , splice
   , sort
   , sortBy
   , sortWith
@@ -200,13 +200,17 @@ modify i f xs = do
     Nothing -> pure false
 
 -- | Remove and/or insert elements from/into a mutable array at the specified index.
-foreign import splice
-  :: forall h a
-   . Int
-  -> Int
-  -> Array a
-  -> STArray h a
-  -> ST h (Array a)
+--
+-- TODO: The JS implementation of this function uses JS unction splice()
+-- internally, which is quite complex.  Some care will need to be taken if we
+-- implement this in Nix.
+-- foreign import splice
+--   :: forall h a
+--    . Int
+--   -> Int
+--   -> Array a
+--   -> STArray h a
+--   -> ST h (Array a)
 
 -- | Create an immutable copy of a mutable array, where each element
 -- | is labelled with its index in the original array.

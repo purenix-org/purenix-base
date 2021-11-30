@@ -1,4 +1,13 @@
-
+let
+  myfoldr = op: nul: list:
+    let
+      len = builtins.length list;
+      fold' = n:
+        if n == len
+        then nul
+        else op (builtins.elemAt list n) (fold' (n + 1));
+    in fold' 0;
+in
 {
   # :: forall f a
   #  . (forall b. (a -> b -> b) -> b -> f a -> b)  # foldr
@@ -48,4 +57,20 @@
       Nothing
     else
       Just (builtins.elemAt arr idx);
+
+  # :: forall a b
+  #  . (forall c. Maybe c)            # Nothing
+  # -> (forall c. Maybe c -> Boolean) # isJust
+  # -> (a -> Maybe b)
+  # -> Array a
+  # -> Maybe b
+  findMapImpl = Nothing: isJust: f: arr:
+    let
+      go = a: accum:
+        let
+          res = f a;
+        in
+        if isJust res then res else accum;
+    in
+    myfoldr go Nothing arr;
 }

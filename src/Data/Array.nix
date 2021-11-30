@@ -196,4 +196,7 @@ in
 
   # :: forall a. Array (Array a) -> Array a
   concat = builtins.concatLists;
+
+  # :: forall a. (a -> Boolean) -> Array a -> Array a
+  filter = builtins.filter;
 }

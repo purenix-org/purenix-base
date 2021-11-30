@@ -33,4 +33,19 @@
       emptyCase null
     else
       consCase (builtins.head arr) (builtins.tail arr);
+
+  # :: forall a
+  #  . (forall r. r -> Maybe r)  # Just
+  # -> (forall r. Maybe r)       # Nothing
+  # -> Array a
+  # -> Int
+  # -> Maybe a
+  indexImpl = Just: Nothing: arr: idx:
+    let
+      len = builtins.length arr;
+    in
+    if idx < 0 || idx >= len then
+      Nothing
+    else
+      Just (builtins.elemAt arr idx);
 }

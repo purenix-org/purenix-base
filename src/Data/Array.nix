@@ -209,4 +209,41 @@ in
       res = builtins.partition f arr;
     in
     { yes = res.right; no = res.wrong; };
+
+  # :: forall a b. (b -> a -> b) -> b -> Array a -> Array b
+  scanl = f: b: arr:
+    let
+      len = builtins.length arr;
+    in
+    if len == 0 then
+      []
+    else
+      let
+        # :: a
+        h = builtins.head arr;
+
+        # :: Array a
+        t = builtins.tail arr;
+
+        # :: ListTuple b (Array b) -> a -> Tuple b (Array b)
+        go = nextElemAndAccumList: a:
+          let
+            # :: b
+            prevElem = builtins.elemAt nextElemAndAccumList 0;
+
+            # :: Array b
+            accumArr = builtins.elemAt nextElemAndAccumList 1;
+
+            # :: b
+            nextElem = f prevElem a;
+          in
+          [nextElem (accumArr ++ [nextElem])];
+
+        # :: b
+        firstElem = f b h;
+
+        # :: ListTuple b (Array b)
+        accum = builtins.foldl' go [firstElem [(f b h)]] t;
+      in
+      builtins.elemAt accum 1;
 }

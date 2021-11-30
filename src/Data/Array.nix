@@ -165,4 +165,26 @@ in
       Nothing
     else
       builtins.genList go (len - 1);
+
+  # :: forall a
+  #  . (forall b. b -> Maybe b) # Just
+  # -> (forall b. Maybe b)      # Nothing
+  # -> Int
+  # -> a
+  # -> Array a
+  # -> Maybe (Array a)
+  _updateAt = Just: Nothing: idx: a: arr:
+    let
+      len = builtins.length arr;
+
+      go = i:
+        if i < idx || i > idx then
+          builtins.elemAt arr i
+        else
+          a;
+    in
+    if idx < 0 || idx >= len then
+      Nothing
+    else
+      builtins.genList go len;
 }

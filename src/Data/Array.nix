@@ -199,4 +199,14 @@ in
 
   # :: forall a. (a -> Boolean) -> Array a -> Array a
   filter = builtins.filter;
+
+  # :: forall a
+  #  . (a -> Boolean)
+  # -> Array a
+  # -> { yes :: Array a, no :: Array a }
+  partition = f: arr:
+    let
+      res = builtins.partition f arr;
+    in
+    { yes = res.right; no = res.wrong; };
 }

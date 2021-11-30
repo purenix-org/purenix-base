@@ -1,4 +1,5 @@
 let
+  # :: (a -> b -> b) -> b -> [a] -> b
   myfoldr = op: nul: list:
     let
       len = builtins.length list;
@@ -6,6 +7,16 @@ let
         if n == len
         then nul
         else op (builtins.elemAt list n) (fold' (n + 1));
+    in fold' 0;
+
+  # :: (Int -> a -> b -> b) -> b -> [a] -> b
+  myfoldri = op: nul: list:
+    let
+      len = builtins.length list;
+      fold' = n:
+        if n == len
+        then nul
+        else op n (builtins.elemAt list n) (fold' (n + 1));
     in fold' 0;
 in
 {
@@ -73,4 +84,16 @@ in
         if isJust res then res else accum;
     in
     myfoldr go Nothing arr;
+
+  # :: forall a
+  #  . (forall b. b -> Maybe b)  # Just
+  # -> (forall b. Maybe b)       # Nothing
+  # -> (a -> Boolean)
+  # -> Array a
+  # -> Maybe Int
+  findIndexImpl = Just: Nothing: f: arr:
+    let
+      go = i: a: accum: if f a then Just i else accum;
+    in
+    myfoldri go Nothing arr;
 }

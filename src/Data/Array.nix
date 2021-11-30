@@ -120,4 +120,28 @@ in
       go = i: a: accum: if f a then Just i else accum;
     in
     myfoldri-rev go Nothing arr;
+
+  # :: forall a
+  #  . (forall b. b -> Maybe b)  # Just
+  # -> (forall b. Maybe b)       # Nothing
+  # -> Int
+  # -> a
+  # -> Array a
+  # -> Maybe (Array a)
+  _insertAt = Just: Nothing: idx: a: arr:
+    let
+      len = builtins.length arr;
+
+      go = i:
+        if i < idx then
+          builtins.elemAt arr i
+        else if i == idx then
+          a
+        else
+          builtins.elemAt arr (i - 1);
+    in
+    if idx < 0 || idx > len then
+      Nothing
+    else
+      builtins.genList go (len + 1);
 }

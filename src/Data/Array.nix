@@ -144,4 +144,25 @@ in
       Nothing
     else
       builtins.genList go (len + 1);
+
+  # :: forall a
+  #  . (forall b. b -> Maybe b) # Just
+  # -> (forall b. Maybe b)      # Nothing
+  # -> Int
+  # -> Array a
+  # -> Maybe (Array a)
+  _deleteAt = Just: Nothing: idx: arr:
+    let
+      len = builtins.length arr;
+
+      go = i:
+        if i < idx then
+          builtins.elemAt arr i
+        else
+          builtins.elemAt arr (i + 1);
+    in
+    if idx < 0 || idx >= len then
+      Nothing
+    else
+      builtins.genList go (len - 1);
 }

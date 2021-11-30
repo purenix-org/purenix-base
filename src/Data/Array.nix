@@ -18,6 +18,18 @@ let
         then nul
         else op n (builtins.elemAt list n) (fold' (n + 1));
     in fold' 0;
+
+  # foldr but operating over the list in reverse.
+  #
+  # :: (Int -> a -> b -> b) -> b -> [a] -> b
+  myfoldri-rev = op: nul: list:
+    let
+      len = builtins.length list;
+      fold' = n:
+        if n < 0
+        then nul
+        else op n (builtins.elemAt list n) (fold' (n - 1));
+    in fold' (len - 1);
 in
 {
   # :: forall f a
@@ -96,4 +108,16 @@ in
       go = i: a: accum: if f a then Just i else accum;
     in
     myfoldri go Nothing arr;
+
+  # :: forall a
+  #  . (forall b. b -> Maybe b)  # Just
+  # -> (forall b. Maybe b)       # Nothing
+  # -> (a -> Boolean)
+  # -> Array a
+  # -> Maybe Int
+  findLastIndexImpl = Just: Nothing: f: arr:
+    let
+      go = i: a: accum: if f a then Just i else accum;
+    in
+    myfoldri-rev go Nothing arr;
 }

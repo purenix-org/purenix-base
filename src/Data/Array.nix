@@ -187,4 +187,13 @@ in
       Nothing
     else
       builtins.genList go len;
+
+  # forall a. Array a -> Array a
+  reverse = arr:
+    let len = builtins.length arr;
+    in
+    builtins.genList (i: builtins.elemAt arr (len - i - 1)) len;
+
+  # :: forall a. Array (Array a) -> Array a
+  concat = builtins.concatLists;
 }

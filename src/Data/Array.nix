@@ -16,5 +16,21 @@
     in
     builtins.genList (i: indexToRangeVal i) len;
 
+  # :: forall a. Int -> a -> Array a
+  replicate = n: a:
+    if n < 0 then [] else builtins.genList (_: a) n;
 
+  # :: forall a. Array a -> Int
+  length = builtins.length;
+
+  # :: forall a b
+  #  . (Unit -> b)          # const Nothing
+  # -> (a -> Array a -> b)  # \x xs -> Just { head: x, tail: xs }
+  # -> Array a
+  # -> b
+  unconsImpl = emptyCase: consCase: arr:
+    if builtins.length arr == 0 then
+      emptyCase null
+    else
+      consCase (builtins.head arr) (builtins.tail arr);
 }

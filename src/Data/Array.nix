@@ -19,7 +19,31 @@ let
         else op n (builtins.elemAt list n) (fold' (n + 1));
     in fold' 0;
 
-  # foldr but operating over the list in reverse.
+  # foldl but operating over the list in reverse.
+  #
+  # :: (b -> a -> b) -> b -> [a] -> b
+  myfoldl-rev = op: nul: list:
+    let
+      len = builtins.length list;
+      fold' = n: accum:
+        if n < 0
+        then accum
+        else fold' (n - 1) (op accum (builtins.elemAt list n));
+    in fold' (len - 1) nul;
+
+  # myfoldr but operating over the list in reverse.
+  #
+  # :: (a -> b -> b) -> b -> [a] -> b
+  myfoldr-rev = op: nul: list:
+    let
+      len = builtins.length list;
+      fold' = n:
+        if n < 0
+        then nul
+        else op (builtins.elemAt list n) (fold' (n - 1));
+    in fold' (len - 1);
+
+  # myfoldri but operating over the list in reverse.
   #
   # :: (Int -> a -> b -> b) -> b -> [a] -> b
   myfoldri-rev = op: nul: list:
@@ -225,7 +249,7 @@ in
         # :: Array a
         t = builtins.tail arr;
 
-        # :: ListTuple b (Array b) -> a -> Tuple b (Array b)
+        # :: ListTuple b (Array b) -> a -> ListTuple b (Array b)
         go = nextElemAndAccumList: a:
           let
             # :: b
@@ -243,7 +267,44 @@ in
         firstElem = f b h;
 
         # :: ListTuple b (Array b)
-        accum = builtins.foldl' go [firstElem [(f b h)]] t;
+        accum = builtins.foldl' go [firstElem [firstElem]] t;
+      in
+      builtins.elemAt accum 1;
+
+  # :: forall a b. (a -> b -> b) -> b -> Array a -> Array b
+  scanr = f: b: arr:
+    let
+      len = builtins.length arr;
+    in
+    if len == 0 then
+      []
+    else
+      let
+        # :: a
+        last = builtins.elemAt arr (len - 1);
+
+        # :: Array a
+        init = builtins.genList (builtins.elemAt arr) (len - 1);
+
+        # :: ListTuple b (Array b) -> a -> ListTuple b (Array b)
+        go = nextElemAndAccumList: a:
+          let
+            # :: b
+            prevElem = builtins.elemAt nextElemAndAccumList 0;
+
+            # :: Array b
+            accumArr = builtins.elemAt nextElemAndAccumList 1;
+
+            # :: b
+            nextElem = f a prevElem;
+          in
+          [nextElem ([nextElem] ++ accumArr)];
+
+        # :: b
+        lastElem = f last b;
+
+        # :: ListTuple b (Array b)
+        accum = myfoldl-rev go [lastElem [lastElem]] init;
       in
       builtins.elemAt accum 1;
 }

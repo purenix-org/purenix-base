@@ -307,4 +307,12 @@ in
         accum = myfoldl-rev go [lastElem [lastElem]] init;
       in
       builtins.elemAt accum 1;
+
+  # :: forall a. (a -> a -> Ordering) -> (Ordering -> Int) -> Array a -> Array a
+  sortByImpl = comp: ord2Int: arr:
+    let
+      # :: a -> a -> Boolean
+      sortF = a: b: if ord2Int (comp a b) == -1 then true else false;
+    in
+    builtins.sort sortF arr;
 }

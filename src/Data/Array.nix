@@ -343,4 +343,13 @@ in
       minLen = if lenArr1 < lenArr2 then lenArr1 else lenArr2;
     in
     builtins.genList (i: f (builtins.elemAt arr1 i) (builtins.elemAt arr2 i)) minLen;
+
+  # :: forall a. (a -> Boolean) -> Array a -> Boolean
+  any = builtins.any;
+
+  # :: forall a. (a -> Boolean) -> Array a -> Boolean
+  all = builtins.all;
+
+  # :: forall a. Array a -> Int -> a
+  unsafeIndexImpl = builtins.elemAt;
 }

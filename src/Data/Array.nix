@@ -332,4 +332,15 @@ in
         newArrLen = end' - start';
       in
       builtins.genList (i: builtins.elemAt arr (start' + i)) newArrLen;
+
+  # :: forall a b c . (a -> b -> c) -> Array a -> Array b -> Array c
+  zipWith = f: arr1: arr2:
+    let
+      lenArr1 = builtins.length arr1;
+
+      lenArr2 = builtins.length arr2;
+
+      minLen = if lenArr1 < lenArr2 then lenArr1 else lenArr2;
+    in
+    builtins.genList (i: f (builtins.elemAt arr1 i) (builtins.elemAt arr2 i)) minLen;
 }

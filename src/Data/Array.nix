@@ -315,4 +315,21 @@ in
       sortF = a: b: if ord2Int (comp a b) == -1 then true else false;
     in
     builtins.sort sortF arr;
+
+  # :: forall a. Int -> Int -> Array a -> Array a
+  slice = start: end: arr:
+    let
+      len = builtins.length arr;
+
+      start' = if start < 0 then 0 else start;
+
+      end' = if end > len then len else end;
+    in
+    if start' >= len || end' <= 0 || start' >= end then
+      []
+    else
+      let
+        newArrLen = end' - start';
+      in
+      builtins.genList (i: builtins.elemAt arr (start' + i)) newArrLen;
 }

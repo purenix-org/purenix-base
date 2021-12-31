@@ -1,4 +1,6 @@
 {
   pureE = a: _: a;
-  bindE = a: f: _: f (a null) null;
+  bindE = x: f: _:
+    let r = x null; in
+    if r == null then f r null else f r null;
 }

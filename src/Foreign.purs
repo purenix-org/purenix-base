@@ -2,6 +2,15 @@
 -- | data.
 module Foreign
   ( Foreign
+  , isAttrs
+  , isBool
+  , isPath
+  , isFloat
+  , isFunction
+  , isInt
+  , isList
+  , isNull
+  , isString
   -- , ForeignError(..)
   -- , MultipleErrors(..)
   -- , F
@@ -27,9 +36,8 @@ module Foreign
   -- , fail
   ) where
 
-import Prelude
-
 {-
+import Prelude
 import Control.Monad.Except (Except, ExceptT, mapExceptT, throwError)
 import Data.Either (Either(..), either)
 import Data.Int as Int
@@ -112,16 +120,38 @@ unsafeReadTagged :: forall m a. Monad m => String -> Foreign -> FT m a
 unsafeReadTagged tag value
   | tagOf value == tag = pure (unsafeFromForeign value)
   | otherwise = fail $ TypeMismatch tag (tagOf value)
-
+-}
 -- | Test whether a foreign value is null
 foreign import isNull :: Foreign -> Boolean
-
--- | Test whether a foreign value is undefined
-foreign import isUndefined :: Foreign -> Boolean
 
 -- | Test whether a foreign value is an array
 foreign import isArray :: Foreign -> Boolean
 
+-- | Test whether a foreign value is an Attribute Set
+foreign import isAttrs :: Foreign -> Boolean
+
+-- | Test whether a foreign value is a boolean
+foreign import isBool :: Foreign -> Boolean
+
+-- | Test whether a foreign value is a path
+foreign import isPath :: Foreign -> Boolean
+
+-- | Test whether a foreign value is a float
+foreign import isFloat :: Foreign -> Boolean
+
+-- | Test whether a foreign value is a function
+foreign import isFunction :: Foreign -> Boolean
+
+-- | Test whether a foreign value is an integer
+foreign import isInt :: Foreign -> Boolean
+
+-- | Test whether a foreign value is a list
+foreign import isList :: Foreign -> Boolean
+
+-- | Test whether a foreign value is a string
+foreign import isString :: Foreign -> Boolean
+
+{-
 -- | Attempt to coerce a foreign value to a `String`.
 readString :: forall m. Monad m => Foreign -> FT m String
 readString = unsafeReadTagged "String"

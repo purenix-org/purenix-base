@@ -1,6 +1,5 @@
 module Test.Main where
 
-import Prelude
 import Test.MiraculixLite (TestTree, runTests, testGroup)
 import Test.Foreign as Test.Foreign
 

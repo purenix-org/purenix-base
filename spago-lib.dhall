@@ -1,5 +1,5 @@
 { name = "purescript-foreign"
-, dependencies = [ "prelude" ]
+, dependencies = [] : List Text
 , backend = "purenix"
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs" ]

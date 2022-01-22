@@ -9,4 +9,4 @@ tests:
 	nix-build -E '(import ./output/Test.Main/default.nix).main null'
 
 docs:
-	spago docs
+	spago docs --config spago-lib.dhall

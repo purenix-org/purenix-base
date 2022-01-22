@@ -1,12 +1,12 @@
 # purescript-foreign
 
-A fork of [purescript-foreign](https://github.com/purescript/purescript-foreign) for [purenix](https://github.com/purenix-org/purenix)
+A port of [purescript-foreign](https://github.com/purescript/purescript-foreign) for [purenix](https://github.com/purenix-org/purenix)
 
 ## Docs
 
-[API Documentation](http://)
+[API Documentation](https://purenix-org.github.io/purescript-foreign/Foreign.html)
 
-## Differences to the JS version
+## Differences from the JS version
 
 - Adjusts predicates and read functions to native nix data types
 

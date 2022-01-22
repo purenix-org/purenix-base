@@ -5,7 +5,7 @@ build:
 	spago build
 
 tests:
-	spago build --config tests.dhall && \
+	spago build --config spago-test.dhall && \
 	nix-build -E '(import ./output/Test.Main/default.nix).main null'
 
 docs:

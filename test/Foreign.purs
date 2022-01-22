@@ -3,7 +3,7 @@ module Test.Foreign where
 import Prelude
 import Foreign (Foreign)
 import Foreign as F
-import Test.Miraculix (TestTree, testCase, testGroup, (@?=))
+import Test.MiraculixLite (TestTree, testCase, testGroup, (@?=))
 
 -- Remove once https://github.com/purenix-org/purenix/issues/35 is fixed
 foreign import tick :: String

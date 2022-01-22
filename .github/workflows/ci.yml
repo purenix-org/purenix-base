@@ -3,9 +3,7 @@ on:
   pull_request:
   push:
 jobs:
-  tests:
-    env:
-      NIX_PATH: "nipkgs=https://github.com/NixOS/nixpkgs/archive/8588b14a397e045692d0a87192810b6dddf53003.tar.gz"
+  ci:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -13,8 +11,6 @@ jobs:
 
       - name: Install Nix
         uses: cachix/install-nix-action@v15
-        with:
-          nix_path: nixpkgs=channel:nixos-unstable
 
       - name: Build
         run: nix develop --command make build
@@ -26,6 +22,7 @@ jobs:
         run: nix develop --command make docs
 
       - name: Deploy Docs to GH Pages
+        if: { { github.ref == 'ref/head/main' } }
         uses: JamesIves/github-pages-deploy-action@4.1.7
         with:
           branch: gh-pages

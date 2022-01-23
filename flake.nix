@@ -1,5 +1,5 @@
 {
-  description = "purescript-arrays";
+  description = "purescript-foreign";
 
   inputs.purenix.url = "github:purenix-org/purenix";
   inputs.nixpkgs.follows = "purenix/nixpkgs";

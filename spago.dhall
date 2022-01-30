@@ -1,10 +1,11 @@
-let lib = ./spago-lib.dhall
+let lib = { dependencies = [ "prelude" ], sources = [ "src/**/*.purs" ] }
 
-let test = ./spago-test.dhall
+let test =
+      { dependencies = [ "miraculix-lite" ], sources = [ "test/**/*.purs" ] }
 
-in  { name = "purescript-foreign-dev"
+in  { name = "purescript-foreign"
     , dependencies = lib.dependencies # test.dependencies
-    , backend = lib.backend
-    , packages = lib.packages
+    , backend = "purenix"
+    , packages = ./packages.dhall
     , sources = lib.sources # test.sources
     }

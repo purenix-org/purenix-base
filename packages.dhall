@@ -1,5 +1,5 @@
 let upstream =
-      https://raw.githubusercontent.com/purenix-org/temp-package-set/main/packages.dhall sha256:c073e77508fdfeaba77c854190335a1214cb67b57db1b641b14b54427e83ed0c
+      https://raw.githubusercontent.com/purenix-org/temp-package-set/main/packages.dhall sha256:bd6b12b9a2c48347add2644455a1197bfbf681dfb29de2d14f49d57a87c05e88
 
 let additions =
       { miraculix-lite =

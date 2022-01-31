@@ -5,8 +5,8 @@ build:
 	spago build
 
 tests:
-	spago build --config spago-test.dhall && \
+	spago build && \
 	nix-build -E '(import ./output/Test.Main/default.nix).main null'
 
 docs:
-	spago docs --config spago-lib.dhall
+	spago docs

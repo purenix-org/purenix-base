@@ -1,0 +1,10 @@
+{
+  "package": {
+    "name": "control",
+    "version": "0.0.0",
+    "dependencies": [
+      "newtype",
+      "prelude"
+    ]
+  }
+}

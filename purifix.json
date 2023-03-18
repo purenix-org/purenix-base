@@ -1,5 +1,7 @@
 {
   "workspace": {
-    "package_set": "18.0.0"
+    "package_set": {
+      "registry": "18.0.0"
+    }
   }
 }

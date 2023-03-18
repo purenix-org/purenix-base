@@ -1,0 +1,9 @@
+{
+  "package": {
+    "name": "exists",
+    "version": "0.0.0",
+    "dependencies": [
+      "unsafe-coerce"
+    ]
+  }
+}

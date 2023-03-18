@@ -1,0 +1,10 @@
+{
+  "package": {
+    "name": "newtype",
+    "version": "0.0.0",
+    "dependencies": [
+      "prelude",
+      "safe-coerce"
+    ]
+  }
+}

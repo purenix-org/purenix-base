@@ -26,10 +26,12 @@
           backend = pkgs.purenix;
           withDocs = false;
         };
+        all-packages = pkgs.linkFarmFromDrvs "purenix-pkgs" (builtins.attrValues purenix-pkgs);
       in
       {
         packages = {
           default = purenix-pkgs;
+          inherit all-packages;
         };
         defaultPackage = purenix-pkgs;
       });

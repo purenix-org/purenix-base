@@ -1,0 +1,12 @@
+{
+  "package": {
+    "name": "either",
+    "version": "0.0.0",
+    "dependencies": [
+      "control",
+      "invariant",
+      "maybe",
+      "prelude"
+    ]
+  }
+}

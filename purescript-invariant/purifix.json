@@ -1,0 +1,10 @@
+{
+  "package": {
+    "name": "invariant",
+    "version": "0.0.0",
+    "dependencies": [
+      "control",
+      "prelude"
+    ]
+  }
+}

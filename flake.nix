@@ -25,6 +25,7 @@
           src = ./.;
           backend = pkgs.purenix;
           withDocs = false;
+          copyFiles = true;
         };
         all-packages = pkgs.linkFarmFromDrvs "purenix-pkgs" (builtins.attrValues purenix-pkgs);
       in

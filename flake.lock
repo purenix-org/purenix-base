@@ -200,11 +200,11 @@
         "purescript-registry-index": "purescript-registry-index"
       },
       "locked": {
-        "lastModified": 1679164562,
-        "narHash": "sha256-/jgSW/7+CZnclb04mW11Jd2RLb4STlOstA/blLQ2QjQ=",
+        "lastModified": 1679171735,
+        "narHash": "sha256-YKAiLbd8RTpaDzG1r+NeTMdWFufBK5yBTXTLXQ7AyrA=",
         "owner": "purifix",
         "repo": "purifix",
-        "rev": "2d6ef4bcf923922f464ed4281b099ffb878aa9d0",
+        "rev": "13c96c04c12e6150c86a65fee0bf96c960ac3f3c",
         "type": "github"
       },
       "original": {

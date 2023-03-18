@@ -1,0 +1,9 @@
+{
+  "package": {
+    "name": "assert",
+    "version": "0.0.0",
+    "dependencies": [
+      "prelude"
+    ]
+  }
+}

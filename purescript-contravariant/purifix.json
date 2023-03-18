@@ -1,0 +1,13 @@
+{
+  "package": {
+    "name": "contravariant",
+    "version": "0.0.0",
+    "dependencies": [
+      "const",
+      "either",
+      "newtype",
+      "prelude",
+      "tuples"
+    ]
+  }
+}

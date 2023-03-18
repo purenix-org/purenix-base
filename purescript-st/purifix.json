@@ -1,0 +1,9 @@
+{
+  "package": {
+    "name": "st",
+    "version": "0.0.0",
+    "dependencies": [
+      "prelude"
+    ]
+  }
+}

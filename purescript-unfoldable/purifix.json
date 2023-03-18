@@ -1,0 +1,13 @@
+{
+  "package": {
+    "name": "unfoldable",
+    "version": "0.0.0",
+    "dependencies": [
+      "foldable-traversable",
+      "maybe",
+      "partial",
+      "prelude",
+      "tuples"
+    ]
+  }
+}

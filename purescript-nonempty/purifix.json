@@ -1,0 +1,14 @@
+{
+  "package": {
+    "name": "nonempty",
+    "version": "0.0.0",
+    "dependencies": [
+      "control",
+      "foldable-traversable",
+      "maybe",
+      "prelude",
+      "tuples",
+      "unfoldable"
+    ]
+  }
+}

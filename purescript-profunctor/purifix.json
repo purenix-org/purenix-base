@@ -1,0 +1,16 @@
+{
+  "package": {
+    "name": "profunctor",
+    "version": "0.0.0",
+    "dependencies": [
+      "control",
+      "distributive",
+      "either",
+      "exists",
+      "invariant",
+      "newtype",
+      "prelude",
+      "tuples"
+    ]
+  }
+}

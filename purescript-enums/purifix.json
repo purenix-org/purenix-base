@@ -1,0 +1,17 @@
+{
+  "package": {
+    "name": "enums",
+    "version": "0.0.0",
+    "dependencies": [
+      "control",
+      "either",
+      "maybe",
+      "newtype",
+      "nonempty",
+      "partial",
+      "prelude",
+      "tuples",
+      "unfoldable"
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "package": {
+    "name": "distributive",
+    "version": "0.0.0",
+    "dependencies": [
+      "identity",
+      "newtype",
+      "prelude",
+      "tuples",
+      "type-equality"
+    ]
+  }
+}

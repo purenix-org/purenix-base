@@ -1,0 +1,11 @@
+{
+  "package": {
+    "name": "const",
+    "version": "0.0.0",
+    "dependencies": [
+      "invariant",
+      "newtype",
+      "prelude"
+    ]
+  }
+}

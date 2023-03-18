@@ -1,0 +1,12 @@
+{
+  "package": {
+    "name": "identity",
+    "version": "0.0.0",
+    "dependencies": [
+      "control",
+      "invariant",
+      "newtype",
+      "prelude"
+    ]
+  }
+}

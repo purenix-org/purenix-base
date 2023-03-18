@@ -31,9 +31,7 @@
       in
       {
         packages = {
-          default = purenix-pkgs;
           inherit all-packages;
-        };
-        defaultPackage = purenix-pkgs;
+        } // purenix-pkgs;
       });
 }

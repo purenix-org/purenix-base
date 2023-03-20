@@ -2,6 +2,9 @@
   "workspace": {
     "package_set": {
       "registry": "18.0.0"
+    },
+    "backend": {
+      "cmd": "purenix"
     }
   }
 }

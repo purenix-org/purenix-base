@@ -23,15 +23,14 @@
         };
         purenix-pkgs = pkgs.purifix {
           src = ./.;
-          backend = pkgs.purenix;
+          backends = [ pkgs.purenix ];
           withDocs = false;
           copyFiles = true;
         };
         all-packages = pkgs.linkFarmFromDrvs "purenix-pkgs" (builtins.attrValues purenix-pkgs);
       in
       {
-        packages = {
-          inherit all-packages;
-        } // purenix-pkgs;
+        packages = purenix-pkgs // { inherit all-packages; };
+        checks = purenix-pkgs.prelude.package-set;
       });
 }

@@ -28,9 +28,10 @@
           copyFiles = true;
         };
         all-packages = pkgs.linkFarmFromDrvs "purenix-pkgs" (builtins.attrValues purenix-pkgs);
+        package-set = purenix-pkgs.prelude.package-set;
       in
       {
-        packages = purenix-pkgs // { inherit all-packages; };
+        packages = purenix-pkgs // { inherit all-packages package-set; };
         checks = purenix-pkgs.prelude.package-set;
       });
 }

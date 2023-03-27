@@ -20,7 +20,7 @@ import Data.Bifunctor (class Bifunctor)
 import Data.Either (Either(..))
 import Data.Identity (Identity(..))
 import Data.Maybe (Maybe(..))
-import Effect (Effect, untilE)
+import Effect (Effect)
 import Effect.Ref as Ref
 import Partial.Unsafe (unsafePartial)
 
@@ -120,21 +120,6 @@ tailRec3 f a b c = tailRec (\o -> f o.a o.b o.c) { a, b, c }
 instance monadRecIdentity :: MonadRec Identity where
   tailRecM f = Identity <<< tailRec (runIdentity <<< f)
     where runIdentity (Identity x) = x
-
-instance monadRecEffect :: MonadRec Effect where
-  tailRecM f a = do
-    r <- Ref.new =<< f a
-    untilE do
-      Ref.read r >>= case _ of
-        Loop a' -> do
-          e <- f a'
-          _ <- Ref.write e r
-          pure false
-        Done _ -> pure true
-    fromDone <$> Ref.read r
-    where
-    fromDone :: forall a b. Step a b -> b
-    fromDone = unsafePartial \(Done b) -> b
 
 instance monadRecFunction :: MonadRec ((->) e) where
   tailRecM f a0 e = tailRec (\a -> f a e) a0

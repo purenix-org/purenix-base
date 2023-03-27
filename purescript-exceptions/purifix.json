@@ -1,0 +1,12 @@
+{
+  "package": {
+    "name": "exceptions",
+    "version": "0.0.0",
+    "dependencies": [
+      "effect",
+      "either",
+      "maybe",
+      "prelude"
+    ]
+  }
+}

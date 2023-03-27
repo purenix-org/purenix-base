@@ -3,7 +3,11 @@
     "name": "foreign",
     "version": "0.0.0",
     "dependencies": [
-      "prelude"
+      "prelude",
+      "maybe",
+      "lists",
+      "nonempty",
+      "unsafe-coerce"
     ]
   }
 }

@@ -8,40 +8,49 @@
 -- | unlike `Either`, which preserves only the last error.
 module Foreign
   ( Foreign
-  , ForeignError(..)
-  , MultipleErrors(..)
-  , F
-  , FT
-  , renderForeignError
-  , unsafeToForeign
-  , unsafeFromForeign
-  , unsafeReadTagged
-  , typeOf
-  , tagOf
+  , isAttrs
+  , isBool
+  , isPath
+  , isFloat
+  , isFunction
+  , isInt
+  , isList
   , isNull
-  , isUndefined
-  , isArray
-  , readString
-  , readChar
-  , readBoolean
-  , readNumber
-  , readInt
-  , readArray
-  , readNull
-  , readUndefined
-  , readNullOrUndefined
-  , fail
+  , isString
+  -- , ForeignError(..)
+  -- , MultipleErrors(..)
+  -- , F
+  -- , FT
+  -- , renderForeignError
+  -- , unsafeToForeign
+  -- , unsafeFromForeign
+  -- , unsafeReadTagged
+  -- , typeOf
+  -- , tagOf
+  -- , isNull
+  -- , isUndefined
+  -- , isArray
+  -- , readString
+  -- , readChar
+  -- , readBoolean
+  -- , readNumber
+  -- , readInt
+  -- , readArray
+  -- , readNull
+  -- , readUndefined
+  -- , readNullOrUndefined
+  -- , fail
   ) where
 
 import Prelude
 
-import Control.Monad.Except (Except, ExceptT, mapExceptT, throwError)
+-- import Control.Monad.Except (Except, ExceptT, mapExceptT, throwError)
 import Data.Either (Either(..), either)
-import Data.Int as Int
+-- import Data.Int as Int
 import Data.List.NonEmpty (NonEmptyList)
 import Data.List.NonEmpty as NEL
 import Data.Maybe (Maybe(..), maybe)
-import Data.String.CodeUnits (toChar)
+-- import Data.String.CodeUnits (toChar)
 import Unsafe.Coerce (unsafeCoerce)
 
 -- | A type for _foreign data_.
@@ -81,6 +90,7 @@ renderForeignError (ErrorAtIndex i e) = "Error at array index " <> show i <> ": 
 renderForeignError (ErrorAtProperty prop e) = "Error at property " <> show prop <> ": " <> renderForeignError e
 renderForeignError (TypeMismatch exp act) = "Type mismatch: expected " <> exp <> ", found " <> act
 
+{-
 -- | While this alias is not deprecated, it is recommended
 -- | that one use `Except (NonEmptyList ForeignError)` directly
 -- | for all future usages rather than this type alias.
@@ -124,7 +134,7 @@ unsafeReadTagged :: forall m a. Monad m => String -> Foreign -> ExceptT (NonEmpt
 unsafeReadTagged tag value
   | tagOf value == tag = pure (unsafeFromForeign value)
   | otherwise = fail $ TypeMismatch tag (tagOf value)
-
+-}
 -- | Test whether a foreign value is null
 foreign import isNull :: Foreign -> Boolean
 
@@ -134,6 +144,31 @@ foreign import isUndefined :: Foreign -> Boolean
 -- | Test whether a foreign value is an array
 foreign import isArray :: Foreign -> Boolean
 
+-- | Test whether a foreign value is an Attribute Set
+foreign import isAttrs :: Foreign -> Boolean
+
+-- | Test whether a foreign value is a boolean
+foreign import isBool :: Foreign -> Boolean
+
+-- | Test whether a foreign value is a path
+foreign import isPath :: Foreign -> Boolean
+
+-- | Test whether a foreign value is a float
+foreign import isFloat :: Foreign -> Boolean
+
+-- | Test whether a foreign value is a function
+foreign import isFunction :: Foreign -> Boolean
+
+-- | Test whether a foreign value is an integer
+foreign import isInt :: Foreign -> Boolean
+
+-- | Test whether a foreign value is a list
+foreign import isList :: Foreign -> Boolean
+
+-- | Test whether a foreign value is a string
+foreign import isString :: Foreign -> Boolean
+
+{-
 -- | Attempt to coerce a foreign value to a `String`.
 readString :: forall m. Monad m => Foreign -> ExceptT (NonEmptyList ForeignError) m String
 readString = unsafeReadTagged "String"
@@ -184,3 +219,4 @@ readNullOrUndefined value
 -- | Throws a failure error in `ExceptT (NonEmptyList ForeignError) m`.
 fail :: forall m a. Monad m => ForeignError -> ExceptT (NonEmptyList ForeignError) m a
 fail = throwError <<< NEL.singleton
+-}

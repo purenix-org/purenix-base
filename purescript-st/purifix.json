@@ -5,6 +5,7 @@
     "dependencies": [
       "prelude",
       "partial",
+      "tailrec",
       "unsafe-coerce"
     ]
   }

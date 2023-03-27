@@ -1,0 +1,18 @@
+{
+  "package": {
+    "name": "gen",
+    "version": "0.0.0",
+    "dependencies": [
+      "either",
+      "foldable-traversable",
+      "identity",
+      "maybe",
+      "newtype",
+      "nonempty",
+      "prelude",
+      "tailrec",
+      "tuples",
+      "unfoldable"
+    ]
+  }
+}

@@ -3,7 +3,9 @@
     "name": "st",
     "version": "0.0.0",
     "dependencies": [
-      "prelude"
+      "prelude",
+      "partial",
+      "unsafe-coerce"
     ]
   }
 }

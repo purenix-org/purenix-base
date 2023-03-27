@@ -12,6 +12,22 @@ Bugfixes:
 
 Other improvements:
 
+## [v6.1.0](https://github.com/purescript/purescript-either/releases/tag/v6.1.0) - 2022-05-16
+
+New features:
+- Add `blush` which is a left-biased `hush`, thus turns `Right`s into `Nothing`s but `Left`s into `Just`s (#69 by @i-am-the-slime).
+
+## [v6.0.0](https://github.com/purescript/purescript-either/releases/tag/v6.0.0) - 2022-04-27
+
+Breaking changes:
+- Update project and deps to PureScript v0.15.0 (#66 by @JordanMartinez)
+
+New features:
+
+Bugfixes:
+
+Other improvements:
+
 ## [v5.0.0](https://github.com/purescript/purescript-either/releases/tag/v5.0.0) - 2021-02-26
 
 Breaking changes:
@@ -137,6 +153,3 @@ Add `Alt` instance
 
 
 ## [v0.1.0](https://github.com/purescript/purescript-either/releases/tag/v0.1.0) - 2014-04-21
-
-
-

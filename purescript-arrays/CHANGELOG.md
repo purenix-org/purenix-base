@@ -11,7 +11,34 @@ New features:
 Bugfixes:
 
 Other improvements:
-- Fixed minor documention issue with `find` (#216 by @JamieBallingall)
+
+## [v7.2.0](https://github.com/purescript/purescript-arrays/releases/tag/v7.2.0) - 2023-01-17
+
+New features:
+- Add `prependArray` (#224 by @JordanMartinez)
+- Add `Data.Array.ST.length` (#239 by @Blugatroff)
+
+Other improvements:
+- Use more efficient implementation for `mapWithIndex` (#233 by @JordanMartinez)
+
+## [v7.1.0](https://github.com/purescript/purescript-arrays/releases/tag/v7.1.0) - 2022-08-06
+
+New features:
+- Added `transpose` to `Array` (#225 by @newlandsvalley and @JordanMartinez)
+- Added `transpose` and `transpose' `to `Array.NonEmpty` (#227 by @newlandsvalley and @JordanMartinez)
+
+## [v7.0.0](https://github.com/purescript/purescript-arrays/releases/tag/v7.0.0) - 2022-04-27
+
+Breaking changes:
+- Migrate FFI to ES modules (#218 by @kl0tl and @JordanMartinez)
+- Drop deprecated `group'` and `empty` (#219 by @JordanMartinez)
+
+New features:
+
+Bugfixes:
+
+Other improvements:
+- Fixed minor documentation issue with `find` (#216 by @JamieBallingall)
 
 ## [v6.0.1](https://github.com/purescript/purescript-arrays/releases/tag/v6.0.1) - 2021-04-19
 

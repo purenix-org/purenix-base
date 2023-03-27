@@ -1,12 +1,12 @@
 module Test.Main where
 
-import Test.MiraculixLite (TestTree, runTests, testGroup)
-import Test.Data.Enum as Test.Data.Enum
+import Prelude
 
-main = runTests tests
+import Effect (Effect)
+import Test.Data.Enum (testEnum)
+import Test.Data.Enum.Generic (testGenericEnum)
 
-tests :: TestTree
-tests =
-  testGroup "enums"
-    [ Test.Data.Enum.tests
-    ]
+main :: Effect Unit
+main = do
+  testEnum
+  testGenericEnum

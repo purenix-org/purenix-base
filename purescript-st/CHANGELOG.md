@@ -12,6 +12,27 @@ Bugfixes:
 
 Other improvements:
 
+## [v6.2.0](https://github.com/purescript/purescript-st/releases/tag/v6.2.0) - 2022-09-30
+
+New features:
+- Add Semigroup and Monoid instances (#51 by @PureFunctor)
+
+## [v6.1.0](https://github.com/purescript/purescript-st/releases/tag/v6.1.0) - 2022-09-26
+
+New features:
+- Adds uncurried ST functions with similar signatures and purposes as effect uncurried functions (#52 by @mikesol)
+
+## [v6.0.0](https://github.com/purescript/purescript-st/releases/tag/v6.0.0) - 2022-04-27
+
+Breaking changes:
+- Migrate FFI to ES modules (#47 by @kl0tl and @JordanMartinez)
+
+New features:
+
+Bugfixes:
+
+Other improvements:
+
 ## [v5.0.1](https://github.com/purescript/purescript-st/releases/tag/v5.0.1) - 2021-04-27
 
 Other improvements:

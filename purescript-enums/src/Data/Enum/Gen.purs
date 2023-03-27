@@ -1,7 +1,7 @@
 module Data.Enum.Gen where
 
-{-
 import Prelude
+
 import Control.Monad.Gen (class MonadGen, elements)
 import Data.Enum (class BoundedEnum, succ, enumFromTo)
 import Data.Maybe (Maybe(..))
@@ -16,4 +16,3 @@ genBoundedEnum =
       in elements (bottom :| possibilities)
     Nothing →
       pure bottom
--}

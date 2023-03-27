@@ -25,7 +25,6 @@ import Safe.Coerce (class Coercible, coerce)
 -- | defined as `newtype` rather than `data` declaration (even if the `data`
 -- | structurally fits the rules of a `newtype`), and the use of a wildcard for
 -- | the wrapped type.
--- | ```
 class Newtype :: Type -> Type -> Constraint
 class Coercible t a <= Newtype t a | t -> a
 
@@ -55,6 +54,11 @@ instance newtypeLast :: Newtype (Last a) a
 -- | function.
 un :: forall t a. Newtype t a => (a -> t) -> t -> a
 un _ = unwrap
+
+-- | This combinator unwraps the newtype, applies a monomorphic function to the 
+-- | contained value and wraps the result back in the newtype
+modify :: forall t a. Newtype t a => (a -> a) -> t -> t
+modify fn t = wrap (fn (unwrap t))
 
 -- | This combinator is for when you have a higher order function that you want
 -- | to use in the context of some newtype - `foldMap` being a common example:
@@ -215,9 +219,9 @@ underF _ = coerce
 -- |
 -- | ``` purescript
 -- | newtype Meter = Meter Int
--- | derive newtype instance newtypeMeter :: Newtype Meter _
+-- | derive instance newtypeMeter :: Newtype Meter _
 -- | newtype SquareMeter = SquareMeter Int
--- | derive newtype instance newtypeSquareMeter :: Newtype SquareMeter _
+-- | derive instance newtypeSquareMeter :: Newtype SquareMeter _
 -- |
 -- | area :: Meter -> Meter -> SquareMeter
 -- | area = over2 Meter (*)

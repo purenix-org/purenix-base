@@ -8,17 +8,17 @@ module Data.Array.ST
   , run
   , withArray
   , new
-  , empty
   , peek
   , poke
   , modify
+  , length
   , pop
   , push
   , pushAll
   , shift
   , unshift
   , unshiftAll
-  -- , splice
+  , splice
   , sort
   , sortBy
   , sortWith
@@ -34,7 +34,6 @@ import Prelude
 import Control.Monad.ST as ST
 import Control.Monad.ST (ST, Region)
 import Data.Maybe (Maybe(..))
-import Prim.TypeError (class Warn, Text)
 
 -- | A reference to a mutable array.
 -- |
@@ -79,9 +78,6 @@ foreign import unsafeThaw :: forall h a. Array a -> ST h (STArray h a)
 
 -- | Create a new, empty mutable array.
 foreign import new :: forall h a. ST h (STArray h a)
-
-empty :: forall h a. Warn (Text "'Data.Array.ST.empty' is deprecated, use 'Data.Array.ST.new' instead") => ST h (STArray h a)
-empty = new
 
 -- | Create a mutable copy of an immutable array.
 foreign import thaw :: forall h a. Array a -> ST h (STArray h a)
@@ -154,6 +150,9 @@ foreign import peekImpl
 -- | Change the value at the specified index in a mutable array.
 foreign import poke :: forall h a. Int -> a -> STArray h a -> ST h Boolean
 
+-- | Get the number of elements in a mutable array.
+foreign import length :: forall h a. STArray h a -> ST h Int
+
 -- | Remove the last element from an array and return that element.
 pop :: forall h a. STArray h a -> ST h (Maybe a)
 pop = popImpl Just Nothing
@@ -200,17 +199,13 @@ modify i f xs = do
     Nothing -> pure false
 
 -- | Remove and/or insert elements from/into a mutable array at the specified index.
---
--- TODO: The JS implementation of this function uses JS unction splice()
--- internally, which is quite complex.  Some care will need to be taken if we
--- implement this in Nix.
--- foreign import splice
---   :: forall h a
---    . Int
---   -> Int
---   -> Array a
---   -> STArray h a
---   -> ST h (Array a)
+foreign import splice
+  :: forall h a
+   . Int
+  -> Int
+  -> Array a
+  -> STArray h a
+  -> ST h (Array a)
 
 -- | Create an immutable copy of a mutable array, where each element
 -- | is labelled with its index in the original array.

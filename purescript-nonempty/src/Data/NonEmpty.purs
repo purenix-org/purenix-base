@@ -29,7 +29,6 @@ import Data.TraversableWithIndex (class TraversableWithIndex, traverseWithIndex)
 import Data.Tuple (uncurry)
 import Data.Unfoldable (class Unfoldable, unfoldr)
 import Data.Unfoldable1 (class Unfoldable1)
-import Prim.TypeError (class Warn, Text)
 
 -- | A non-empty container of elements of type a.
 -- |
@@ -70,12 +69,10 @@ singleton a = a :| empty
 
 -- | Fold a non-empty structure, collecting results using a binary operation.
 -- |
--- | Deprecated, use 'Data.Semigroup.Foldable.foldl1' instead
--- |
 -- | ```purescript
 -- | foldl1 (+) (1 :| [2, 3]) == 6
 -- | ```
-foldl1 :: forall f a. Foldable f => Warn (Text "'Data.NonEmpty.foldl1' is deprecated, use 'Data.Semigroup.Foldable.foldl1' instead") => (a -> a -> a) -> NonEmpty f a -> a
+foldl1 :: forall f a. Foldable f => (a -> a -> a) -> NonEmpty f a -> a
 foldl1 = Foldable1.foldl1
 
 -- | Apply a function that takes the `first` element and remaining elements
@@ -167,3 +164,11 @@ instance foldable1NonEmpty :: Foldable f => Foldable1 (NonEmpty f) where
 
 instance unfoldable1NonEmpty :: Unfoldable f => Unfoldable1 (NonEmpty f) where
   unfoldr1 f b = uncurry (:|) $ unfoldr (map f) <$> f b
+
+-- | This is a lawful `Semigroup` instance that will behave sensibly for common nonempty
+-- | containers like lists and arrays. However, it's not guaranteed that `pure` will behave
+-- | sensibly alongside `<>` for all types, as we don't have any laws which govern their behavior.
+instance semigroupNonEmpty
+  :: (Applicative f, Semigroup (f a))
+  => Semigroup (NonEmpty f a) where
+  append (a1 :| f1) (a2 :| f2) = a1 :| (f1 <> pure a2 <> f2)

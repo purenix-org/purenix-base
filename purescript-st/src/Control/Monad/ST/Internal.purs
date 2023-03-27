@@ -15,8 +15,9 @@ module Control.Monad.ST.Internal
 
 import Prelude
 
--- import Control.Monad.Rec.Class (class MonadRec, Step(..))
--- import Partial.Unsafe (unsafePartial)
+import Control.Apply (lift2)
+import Control.Monad.Rec.Class (class MonadRec, Step(..))
+import Partial.Unsafe (unsafePartial)
 
 -- | `ST` is concerned with _restricted_ mutation. Mutation is restricted to a
 -- | _region_ of mutable references. This kind is inhabited by phantom types
@@ -54,23 +55,29 @@ instance bindST :: Bind (ST r) where
 
 instance monadST :: Monad (ST r)
 
--- instance monadRecST :: MonadRec (ST r) where
---   tailRecM f a = do
---     r <- new =<< f a
---     while (isLooping <$> read r) do
---       read r >>= case _ of
---         Loop a' -> do
---           e <- f a'
---           void (write e r)
---         Done _ -> pure unit
---     fromDone <$> read r
---     where
---       fromDone :: forall a b. Step a b -> b
---       fromDone = unsafePartial \(Done b) -> b
+instance monadRecST :: MonadRec (ST r) where
+  tailRecM f a = do
+    r <- new =<< f a
+    while (isLooping <$> read r) do
+      read r >>= case _ of
+        Loop a' -> do
+          e <- f a'
+          void (write e r)
+        Done _ -> pure unit
+    fromDone <$> read r
+    where
+      fromDone :: forall a b. Step a b -> b
+      fromDone = unsafePartial \(Done b) -> b
 
---       isLooping = case _ of
---         Loop _ -> true
---         _ -> false
+      isLooping = case _ of
+        Loop _ -> true
+        _ -> false
+
+instance semigroupST :: Semigroup a => Semigroup (ST r a) where
+  append = lift2 append
+
+instance monoidST :: Monoid a => Monoid (ST r a) where
+  mempty = pure mempty
 
 -- | Run an `ST` computation.
 -- |

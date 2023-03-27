@@ -12,6 +12,17 @@ Bugfixes:
 
 Other improvements:
 
+## [v4.0.0](https://github.com/purescript/purescript-partial/releases/tag/v4.0.0) - 2022-04-27
+
+Breaking changes:
+- Migrate FFI to ES modules (#24 by @kl0tl and @JordanMartinez)
+
+New features:
+
+Bugfixes:
+
+Other improvements:
+
 ## [v3.0.0](https://github.com/purescript/purescript-partial/releases/tag/v3.0.0) - 2021-02-26
 
 Breaking changes:

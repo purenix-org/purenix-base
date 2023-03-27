@@ -21,6 +21,7 @@ module Data.Array.NonEmpty
   , snoc
   , snoc'
   , appendArray
+  , prependArray
   , insert
   , insertBy
 
@@ -64,6 +65,8 @@ module Data.Array.NonEmpty
   , foldMap1
   , fold1
   , intercalate
+  , transpose
+  , transpose'
   , scanl
   , scanr
 
@@ -80,7 +83,6 @@ module Data.Array.NonEmpty
   , span
   , group
   , groupAll
-  , group'
   , groupBy
   , groupAllBy
 
@@ -111,7 +113,7 @@ module Data.Array.NonEmpty
   , all
 
   , foldM
-  -- , foldRecM
+  , foldRecM
 
   , unsafeIndex
   ) where
@@ -120,7 +122,7 @@ import Prelude
 
 import Control.Alternative (class Alternative)
 import Control.Lazy (class Lazy)
--- import Control.Monad.Rec.Class (class MonadRec)
+import Control.Monad.Rec.Class (class MonadRec)
 import Data.Array as A
 import Data.Array.NonEmpty.Internal (NonEmptyArray(..))
 import Data.Array.NonEmpty.Internal (NonEmptyArray) as Internal
@@ -134,7 +136,7 @@ import Data.Tuple (Tuple(..))
 import Data.Unfoldable (class Unfoldable)
 import Data.Unfoldable1 (class Unfoldable1, unfoldr1)
 import Partial.Unsafe (unsafePartial)
-import Prim.TypeError (class Warn, Text)
+import Safe.Coerce (coerce)
 import Unsafe.Coerce (unsafeCoerce)
 
 -- | Internal - adapt an Array transform to NonEmptyArray
@@ -231,6 +233,9 @@ snoc' xs x = unsafeFromArray $ A.snoc xs x
 
 appendArray :: forall a. NonEmptyArray a -> Array a -> NonEmptyArray a
 appendArray xs ys = unsafeFromArray $ toArray xs <> ys
+
+prependArray :: forall a. Array a -> NonEmptyArray a -> NonEmptyArray a
+prependArray xs ys = unsafeFromArray $ xs <> toArray ys
 
 insert :: forall a. Ord a => a -> NonEmptyArray a -> NonEmptyArray a
 insert x = unsafeAdapt $ A.insert x
@@ -363,6 +368,44 @@ fold1 = F.fold1
 intercalate :: forall a. Semigroup a => a -> NonEmptyArray a -> a
 intercalate = F.intercalate
 
+-- | The 'transpose' function transposes the rows and columns of its argument.
+-- | For example,
+-- |
+-- | ```purescript
+-- | transpose 
+-- |   (NonEmptyArray [ NonEmptyArray [1, 2, 3]
+-- |                  , NonEmptyArray [4, 5, 6]
+-- |                  ]) == 
+-- |   (NonEmptyArray [ NonEmptyArray [1, 4]
+-- |                  , NonEmptyArray [2, 5]
+-- |                  , NonEmptyArray [3, 6]
+-- |                  ])
+-- | ```
+-- |
+-- | If some of the rows are shorter than the following rows, their elements are skipped:
+-- |
+-- | ```purescript
+-- | transpose 
+-- |   (NonEmptyArray [ NonEmptyArray [10, 11]
+-- |                  , NonEmptyArray [20]
+-- |                  , NonEmptyArray [30, 31, 32]
+-- |                  ]) == 
+-- |   (NomEmptyArray [ NonEmptyArray [10, 20, 30]
+-- |                  , NonEmptyArray [11, 31]
+-- |                  , NonEmptyArray [32]
+-- |                  ])
+-- | ```
+transpose :: forall a. NonEmptyArray (NonEmptyArray a) -> NonEmptyArray (NonEmptyArray a)
+transpose = 
+  (coerce :: (Array (Array a)) -> (NonEmptyArray (NonEmptyArray a))) 
+    <<< A.transpose <<< coerce
+
+-- | `transpose`' is identical to `transpose` other than that the inner arrays are each
+-- | a standard `Array` and not a `NonEmptyArray`. However, the result is wrapped in a 
+-- | `Maybe` to cater for the case where the inner `Array` is empty and must return `Nothing`.
+transpose' :: forall a. NonEmptyArray (Array a) -> Maybe (NonEmptyArray (Array a))
+transpose' = fromArray <<< A.transpose <<< coerce
+
 scanl :: forall a b. (b -> a -> b) -> b -> NonEmptyArray a -> NonEmptyArray b
 scanl f x = unsafeAdapt $ A.scanl f x
 
@@ -423,10 +466,6 @@ group = unsafeAdapt $ A.group
 -- | `
 groupAll :: forall a. Ord a => NonEmptyArray a -> NonEmptyArray (NonEmptyArray a)
 groupAll = groupAllBy compare
-
--- | Deprecated previous name of `groupAll`.
-group' :: forall a. Warn (Text "'group\'' is deprecated, use 'groupAll' instead") => Ord a => NonEmptyArray a -> NonEmptyArray (NonEmptyArray a)
-group' = unsafeAdapt $ A.groupAll
 
 -- | Group equal, consecutive elements of an array into arrays, using the
 -- | specified equivalence relation to determine equality.
@@ -552,8 +591,8 @@ all p = adaptAny $ A.all p
 foldM :: forall m a b. Monad m => (b -> a -> m b) -> b -> NonEmptyArray a -> m b
 foldM f acc = adaptAny $ A.foldM f acc
 
--- foldRecM :: forall m a b. MonadRec m => (b -> a -> m b) -> b -> NonEmptyArray a -> m b
--- foldRecM f acc = adaptAny $ A.foldRecM f acc
+foldRecM :: forall m a b. MonadRec m => (b -> a -> m b) -> b -> NonEmptyArray a -> m b
+foldRecM f acc = adaptAny $ A.foldRecM f acc
 
 unsafeIndex :: forall a. Partial => NonEmptyArray a -> Int -> a
 unsafeIndex = adaptAny A.unsafeIndex

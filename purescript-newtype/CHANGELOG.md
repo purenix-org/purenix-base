@@ -11,6 +11,19 @@ New features:
 Bugfixes:
 
 Other improvements:
+- Remove incorrect newtype deriving from `over2` docs (#33 by @ptrfrncsmrph)
+
+## [v5.0.0](https://github.com/purescript/purescript-newtype/releases/tag/v5.0.0) - 2022-04-27
+
+Breaking changes:
+- Update project and deps to PureScript v0.15.0 (#30 by @JordanMartinez)
+
+New features:
+- Added `modify` (#19 by @dwhitney)
+
+Bugfixes:
+
+Other improvements:
 
 ## [v4.0.0](https://github.com/purescript/purescript-newtype/releases/tag/v4.0.0) - 2021-02-26
 

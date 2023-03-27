@@ -1,6 +1,5 @@
 module Data.Enum.Generic where
 
-{-
 import Prelude
 
 import Data.Enum (class BoundedEnum, class Enum, Cardinality(..), cardinality, fromEnum, pred, succ, toEnum)
@@ -117,5 +116,3 @@ genericToEnum = map to <<< genericToEnum'
 -- | type class.
 genericFromEnum :: forall a rep. Generic a rep => GenericBoundedEnum rep => a -> Int
 genericFromEnum = genericFromEnum' <<< from
-
--}

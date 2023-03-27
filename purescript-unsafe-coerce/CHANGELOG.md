@@ -12,6 +12,17 @@ Bugfixes:
 
 Other improvements:
 
+## [v6.0.0](https://github.com/purescript/purescript-unsafe-coerce/releases/tag/v6.0.0) - 2022-04-27
+
+Breaking changes:
+- Migrate FFI to ES modules (#18 by @kl0tl and @JordanMartinez)
+
+New features:
+
+Bugfixes:
+
+Other improvements:
+
 ## [v5.0.0](https://github.com/purescript/purescript-unsafe-coerce/releases/tag/v5.0.0) - 2021-02-26
 
 Breaking changes:

@@ -5,7 +5,6 @@ import Prelude
 import Control.Alt (class Alt, (<|>))
 import Control.Alternative (class Alternative)
 import Control.Extend (class Extend)
-import Control.MonadZero (class MonadZero)
 import Control.Plus (class Plus)
 
 import Data.Eq (class Eq1)
@@ -154,8 +153,6 @@ instance bindMaybe :: Bind Maybe where
 -- | ```
 instance monadMaybe :: Monad Maybe
 
-instance monadZeroMaybe :: MonadZero Maybe
-
 -- | The `Extend` instance allows sequencing of `Maybe` values and functions
 -- | that accept a `Maybe a` and return a non-`Maybe` result using the
 -- | `<<=` operator.
@@ -189,6 +186,16 @@ instance semigroupMaybe :: Semigroup a => Semigroup (Maybe a) where
 
 instance monoidMaybe :: Semigroup a => Monoid (Maybe a) where
   mempty = Nothing
+
+instance semiringMaybe :: Semiring a => Semiring (Maybe a) where
+  zero = Nothing
+  one = Just one
+
+  add Nothing y = y
+  add x Nothing = x
+  add (Just x) (Just y) = Just (add x y)
+
+  mul x y = mul <$> x <*> y
 
 -- | The `Eq` instance allows `Maybe` values to be checked for equality with
 -- | `==` and inequality with `/=` whenever there is an `Eq` instance for the

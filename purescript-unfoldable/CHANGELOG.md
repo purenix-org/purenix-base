@@ -12,6 +12,18 @@ Bugfixes:
 
 Other improvements:
 
+## [v6.0.0](https://github.com/purescript/purescript-unfoldable/releases/tag/v6.0.0) - 2022-04-27
+
+Breaking changes:
+- Migrate FFI to ES modules (#37 by @kl0tl and @JordanMartinez)
+
+New features:
+- Add `iterateN` function (#20 by @matthewleon and @JordanMartinez)
+
+Bugfixes:
+
+Other improvements:
+
 ## [v5.0.0](https://github.com/purescript/purescript-unfoldable/releases/tag/v5.0.0) - 2021-02-26
 
 Breaking changes:

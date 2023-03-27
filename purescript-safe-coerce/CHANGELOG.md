@@ -12,6 +12,17 @@ Bugfixes:
 
 Other improvements:
 
+## [v2.0.0](https://github.com/purescript/purescript-safe-coerce/releases/tag/v2.0.0) - 2022-04-27
+
+Breaking changes:
+- Update project and deps to PureScript v0.15.0 (#12 by @JordanMartinez)
+
+New features:
+
+Bugfixes:
+
+Other improvements:
+
 ## [v1.0.0](https://github.com/purescript/purescript-safe-coerce/releases/tag/v1.0.0) - 2021-02-26
 
 Breaking changes:

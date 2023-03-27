@@ -3,13 +3,11 @@
 -- | computations, while at the same time generating efficient JavaScript.
 module Effect
   ( Effect
-  -- , untilE
-  -- , whileE
-  -- , forE
-  -- , foreachE
+  , untilE, whileE, forE, foreachE
   ) where
 
 import Prelude
+
 import Control.Apply (lift2)
 
 -- | A native effect. The type parameter denotes the return type of running the
@@ -52,20 +50,23 @@ instance monoidEffect :: Monoid a => Monoid (Effect a) where
 -- |
 -- | `untilE b` is an effectful computation which repeatedly runs the effectful
 -- | computation `b`, until its return value is `true`.
--- foreign import untilE :: Effect Boolean -> Effect Unit
+foreign import untilE :: Effect Boolean -> Effect Unit
+
 -- | Loop while a condition is `true`.
 -- |
 -- | `whileE b m` is effectful computation which runs the effectful computation
 -- | `b`. If its result is `true`, it runs the effectful computation `m` and
 -- | loops. If not, the computation ends.
--- foreign import whileE :: forall a. Effect Boolean -> Effect a -> Effect Unit
+foreign import whileE :: forall a. Effect Boolean -> Effect a -> Effect Unit
+
 -- | Loop over a consecutive collection of numbers.
 -- |
 -- | `forE lo hi f` runs the computation returned by the function `f` for each
 -- | of the inputs between `lo` (inclusive) and `hi` (exclusive).
--- foreign import forE :: Int -> Int -> (Int -> Effect Unit) -> Effect Unit
+foreign import forE :: Int -> Int -> (Int -> Effect Unit) -> Effect Unit
+
 -- | Loop over an array of values.
 -- |
 -- | `foreachE xs f` runs the computation returned by the function `f` for each
 -- | of the inputs `xs`.
--- foreign import foreachE :: forall a. Array a -> (a -> Effect Unit) -> Effect Unit
+foreign import foreachE :: forall a. Array a -> (a -> Effect Unit) -> Effect Unit

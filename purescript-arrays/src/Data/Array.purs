@@ -84,6 +84,7 @@ module Data.Array
   , foldMap
   , fold
   , intercalate
+  , transpose
   , scanl
   , scanr
 
@@ -100,7 +101,6 @@ module Data.Array
   , span
   , group
   , groupAll
-  , group'
   , groupBy
   , groupAllBy
 
@@ -126,7 +126,7 @@ module Data.Array
   , all
 
   , foldM
-  -- , foldRecM
+  , foldRecM
 
   , unsafeIndex
   ) where
@@ -136,19 +136,19 @@ import Prelude
 import Control.Alt ((<|>))
 import Control.Alternative (class Alternative)
 import Control.Lazy (class Lazy, defer)
--- import Control.Monad.Rec.Class (class MonadRec, Step(..), tailRecM2)
+import Control.Monad.Rec.Class (class MonadRec, Step(..), tailRecM2)
 import Control.Monad.ST as ST
 import Data.Array.NonEmpty.Internal (NonEmptyArray(..))
 import Data.Array.ST as STA
 import Data.Array.ST.Iterator as STAI
 import Data.Foldable (class Foldable, traverse_)
 import Data.Foldable as F
+import Data.FunctorWithIndex as FWI
 import Data.Maybe (Maybe(..), maybe, isJust, fromJust, isNothing)
 import Data.Traversable (sequence, traverse)
 import Data.Tuple (Tuple(..), fst, snd)
 import Data.Unfoldable (class Unfoldable, unfoldr)
 import Partial.Unsafe (unsafePartial)
-import Prim.TypeError (class Warn, Text)
 
 -- | Convert an `Array` into an `Unfoldable` structure.
 toUnfoldable :: forall f. Unfoldable f => Array ~> f
@@ -739,8 +739,7 @@ catMaybes = mapMaybe identity
 -- | ```
 -- |
 mapWithIndex :: forall a b. (Int -> a -> b) -> Array a -> Array b
-mapWithIndex f xs =
-  zipWith f (range 0 (length xs - 1)) xs
+mapWithIndex = FWI.mapWithIndex
 
 -- | Change the elements at the specified indices in index/value pairs.
 -- | Out-of-bounds indices will have no effect.
@@ -782,6 +781,46 @@ fold = F.fold
 
 intercalate :: forall a. Monoid a => a -> Array a -> a
 intercalate = F.intercalate
+
+-- | The 'transpose' function transposes the rows and columns of its argument.
+-- | For example,
+-- |
+-- | ```purescript
+-- | transpose 
+-- |   [ [1, 2, 3]
+-- |   , [4, 5, 6]
+-- |   ] == 
+-- |   [ [1, 4]
+-- |   , [2, 5]
+-- |   , [3, 6]
+-- |   ]
+-- | ```
+-- |
+-- | If some of the rows are shorter than the following rows, their elements are skipped:
+-- |
+-- | ```purescript
+-- | transpose 
+-- |   [ [10, 11]
+-- |   , [20]
+-- |   , [30, 31, 32]
+-- |   ] == 
+-- |   [ [10, 20, 30]
+-- |   , [11, 31]
+-- |   , [32]
+-- |   ]
+-- | ```
+transpose :: forall a. Array (Array a) -> Array (Array a)
+transpose xs = go 0 []
+  where
+  go :: Int -> Array (Array a) -> Array (Array a)
+  go idx allArrays = case buildNext idx of
+    Nothing -> allArrays
+    Just next -> go (idx + 1) (snoc allArrays next)  
+   
+  buildNext :: Int -> Maybe (Array a)
+  buildNext idx = do
+    xs # flip foldl Nothing \acc nextArr -> do
+      maybe acc (\el -> Just $ maybe [el] (flip snoc el) acc) $ index nextArr idx
 
 -- | Fold a data structure from the left, keeping all intermediate results
 -- | instead of only the final result. Note that the initial value does not
@@ -982,10 +1021,6 @@ group xs = groupBy eq xs
 -- | ```
 groupAll :: forall a. Ord a => Array a -> Array (NonEmptyArray a)
 groupAll = groupAllBy compare
-
--- | Deprecated previous name of `groupAll`.
-group' :: forall a. Warn (Text "'group\'' is deprecated, use 'groupAll' instead") => Ord a => Array a -> Array (NonEmptyArray a)
-group' = groupAll
 
 -- | Group equal, consecutive elements of an array into arrays, using the
 -- | specified equivalence relation to determine equality.
@@ -1263,14 +1298,14 @@ foreign import all :: forall a. (a -> Boolean) -> Array a -> Boolean
 foldM :: forall m a b. Monad m => (b -> a -> m b) -> b -> Array a -> m b
 foldM f b = unconsImpl (\_ -> pure b) (\a as -> f b a >>= \b' -> foldM f b' as)
 
--- foldRecM :: forall m a b. MonadRec m => (b -> a -> m b) -> b -> Array a -> m b
--- foldRecM f b array = tailRecM2 go b 0
---   where
---   go res i
---     | i >= length array = pure (Done res)
---     | otherwise = do
---         res' <- f res (unsafePartial (unsafeIndex array i))
---         pure (Loop { a: res', b: i + 1 })
+foldRecM :: forall m a b. MonadRec m => (b -> a -> m b) -> b -> Array a -> m b
+foldRecM f b array = tailRecM2 go b 0
+  where
+  go res i
+    | i >= length array = pure (Done res)
+    | otherwise = do
+        res' <- f res (unsafePartial (unsafeIndex array i))
+        pure (Loop { a: res', b: i + 1 })
 
 -- | Find the element of an array at the specified index.
 -- |

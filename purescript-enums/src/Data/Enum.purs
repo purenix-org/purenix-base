@@ -1,4 +1,4 @@
-module Data.Enum {-
+module Data.Enum
   ( class Enum, succ, pred
   , class BoundedEnum, cardinality, toEnum, fromEnum
   , toEnumWithDefaults
@@ -14,11 +14,8 @@ module Data.Enum {-
   , defaultCardinality
   , defaultToEnum
   , defaultFromEnum
-  ) 
-  -}
- where
+  ) where
 
-{-
 import Prelude
 
 import Control.MonadPlus (guard)
@@ -317,10 +314,8 @@ diag :: forall a. a -> Tuple a a
 diag a = Tuple a a
 
 charToEnum :: Int -> Maybe Char
-charToEnum n | n >= bottom && n <= top = Just (fromCharCode n)
+charToEnum n | n >= toCharCode bottom && n <= toCharCode top = Just (fromCharCode n)
 charToEnum _ = Nothing
 
 foreign import toCharCode :: Char -> Int
 foreign import fromCharCode :: Int -> Char
-
--}

@@ -1,8 +1,10 @@
 module Data.Function
   ( flip
   , const
-  , apply, ($)
-  , applyFlipped, (#)
+  , apply
+  , ($)
+  , applyFlipped
+  , (#)
   , applyN
   , on
   , module Control.Category
@@ -13,10 +15,15 @@ import Data.Boolean (otherwise)
 import Data.Ord ((<=))
 import Data.Ring ((-))
 
--- | Flips the order of the arguments to a function of two arguments.
+-- | Given a function that takes two arguments, applies the arguments
+-- | to the function in a swapped order.
 -- |
 -- | ```purescript
--- | flip const 1 2 = const 2 1 = 2
+-- | flip append "1" "2" == append "2" "1" == "21"
+-- |
+-- | const 1 "two" == 1
+-- |
+-- | flip const 1 "two" == const "two" 1 == "two"
 -- | ```
 flip :: forall a b c. (a -> b -> c) -> b -> a -> c
 flip f b a = f a b
@@ -98,7 +105,7 @@ applyN :: forall a. (a -> a) -> Int -> a -> a
 applyN f = go
   where
   go n acc
-    | n <= 0   = acc
+    | n <= 0 = acc
     | otherwise = go (n - 1) (f acc)
 
 -- | The `on` function is used to change the domain of a binary operator.

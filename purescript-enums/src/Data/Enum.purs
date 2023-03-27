@@ -61,10 +61,6 @@ instance enumInt :: Enum Int where
   succ n = if n < top then Just (n + 1) else Nothing
   pred n = if n > bottom then Just (n - 1) else Nothing
 
-instance enumChar :: Enum Char where
-  succ = defaultSucc charToEnum toCharCode
-  pred = defaultPred charToEnum toCharCode
-
 instance enumUnit :: Enum Unit where
   succ = const Nothing
   pred = const Nothing
@@ -122,11 +118,6 @@ instance boundedEnumBoolean :: BoundedEnum Boolean where
   toEnum _ = Nothing
   fromEnum false = 0
   fromEnum true = 1
-
-instance boundedEnumChar :: BoundedEnum Char where
-  cardinality = Cardinality (toCharCode top - toCharCode bottom)
-  toEnum = charToEnum
-  fromEnum = toCharCode
 
 instance boundedEnumUnit :: BoundedEnum Unit where
   cardinality = Cardinality 1
@@ -312,10 +303,3 @@ defaultFromEnum = go 0 where
 
 diag :: forall a. a -> Tuple a a
 diag a = Tuple a a
-
-charToEnum :: Int -> Maybe Char
-charToEnum n | n >= toCharCode bottom && n <= toCharCode top = Just (fromCharCode n)
-charToEnum _ = Nothing
-
-foreign import toCharCode :: Char -> Int
-foreign import fromCharCode :: Int -> Char

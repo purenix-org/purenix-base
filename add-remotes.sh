@@ -3,5 +3,5 @@ for d in purescript-*; do
     continue
   fi
   git remote add "$d" git@github.com:purescript/$d.git
-  git fetch "$d" master --depth 1
+  git fetch "$d" master
 done

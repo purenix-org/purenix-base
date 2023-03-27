@@ -5,6 +5,7 @@
     "dependencies": [
       "control",
       "either",
+      "gen",
       "maybe",
       "newtype",
       "nonempty",

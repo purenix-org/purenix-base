@@ -24,10 +24,10 @@ module Effect.Ref
   , new
   , newWithSelf
   , read
-  , modify'
-  , modify
-  , modify_
-  , write
+  -- , modify'
+  -- , modify
+  -- , modify_
+  -- , write
   ) where
 
 import Prelude
@@ -53,6 +53,7 @@ foreign import newWithSelf :: forall s. (Ref s -> s) -> Effect (Ref s)
 -- | Read the current value of a mutable reference.
 foreign import read :: forall s. Ref s -> Effect s
 
+{-
 -- | Update the value of a mutable reference by applying a function
 -- | to the current value.
 modify' :: forall s b. (s -> { state :: s, value :: b }) -> Ref s -> Effect b
@@ -71,3 +72,4 @@ modify_ f s = void $ modify f s
 
 -- | Update the value of a mutable reference to the specified value.
 foreign import write :: forall s. s -> Ref s -> Effect Unit
+-}
